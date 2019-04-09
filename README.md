@@ -143,4 +143,20 @@ Our tagged template solution could thus be written as follows:
                 var tag = "& is a fun tag";
                 console.log(html`<b>${username} says</b>: "${tag}"`);
                 //=> <b>Domenic Denicola says</b>: "&amp; is a fun tag"
-Other possible uses include auto-escaping, formatting, localization and in general, more complex substitutions:
+
+
+If you are using template literals only with placeholders (e.g. ${expression}) like in the question's example, then the result is the same as just concatenating strings. Subjectively it looks better and is easier to read, especially for multi-line strings or strings containing both ' and " since you don't have to escape those characters any more.
+
+Readability is a great feature, but the most interesting thing about templates are Tagged template literals:
+
+let person = {name: 'John Smith'}; 
+let tag = (strArr, name) => strArr[0] + name.toUpperCase() + strArr[1];  
+tag `My name is ${person.name}!` // Output: My name is JOHN SMITH!
+In the third line of this example, a function named tag is called. The content of the template string is split into multiple variables, that you can access in the arguments of the tag function: literal sections (in this example My name is and !) and substitutions (John Smith). The template literal will be evaluated to whatever the tag function returns. (in this case)
+
+The ECMAScript wiki lists some possible use cases, like automatically escaping or encoding input, or localization. You could create a tag function named msg that looks up the literal parts like My name is and substitutes them with translations into the current locale's language, for example into German:
+
+console.log(msg`My name is ${person.name}.`) // Output: Mein Name ist John Smith.
+The value returned by the tag function doesn't even have to be a string. You could create a tag function named $ which evaluates the string and uses it as a query selector to return a collection of DOM nodes, like in this example:
+
+$`a.${className}[href=~'//${domain}/']
