@@ -160,3 +160,16 @@ console.log(msg`My name is ${person.name}.`) // Output: Mein Name ist John Smith
 The value returned by the tag function doesn't even have to be a string. You could create a tag function named $ which evaluates the string and uses it as a query selector to return a collection of DOM nodes, like in this example:
 
 $`a.${className}[href=~'//${domain}/']
+
+One really nice benefit of interpolated string literals is they are allowed to split across multiple lines:
+
+var Actor = {"name" : "RajiniKanth"};
+
+var text =
+`Now is the time for all good men like ${Actor.name}
+to come to the aid of their
+country!`;
+console.log( text );
+// Now is the time for all good men
+// to come to the aid of their
+// country!
